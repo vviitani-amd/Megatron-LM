@@ -24,6 +24,7 @@ from torch.nn import init
 import importlib
 from torch.nn import functional as F
 
+print(f'vviitani/debug: module fused_layer_norm initializing')
 global fused_mix_prec_layer_norm_cuda
 fused_mix_prec_layer_norm_cuda = None
 
