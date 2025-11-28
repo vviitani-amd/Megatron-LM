@@ -68,6 +68,12 @@ class MixedFusedLayerNorm(torch.nn.Module):
 
         global fused_mix_prec_layer_norm_cuda
         print('vviitani/debug: trying to import module fused_mix_prec_layer_norm_cuda')
+
+        import sys
+        print(f'{sys.modules=}')
+        print("fused_mix_prec_layer_norm_cuda" in sys.modules)
+        print(f'{sys.path}')
+
         fused_mix_prec_layer_norm_cuda = importlib.import_module(
           "fused_mix_prec_layer_norm_cuda")
 
