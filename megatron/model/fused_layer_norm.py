@@ -117,6 +117,8 @@ class MixedFusedLayerNorm(torch.nn.Module):
         fused_mix_prec_layer_norm_cuda = importlib.import_module(
           "fused_mix_prec_layer_norm_cuda")
 
+        # Print the path of the file where the module was loaded from
+        print(f"The module 'fused_mix_prec_layer_norm_cuda' was loaded from: {fused_mix_prec_layer_norm_cuda.__file__}")
 
         if isinstance(normalized_shape, numbers.Integral):
             normalized_shape = (normalized_shape,)
