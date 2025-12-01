@@ -91,6 +91,23 @@ class MixedFusedLayerNorm(torch.nn.Module):
         except PermissionError:
             print(f"Permission denied to access the directory {module_build_directory}.")
 
+        # use ldd on the module file
+        import subprocess
+
+        # Path to the .so file
+        so_file_path = '/myworkspace/Megatron-LM/megatron/fused_kernels/build/fused_mix_prec_layer_norm_cuda.so'
+
+        # Run the ldd command and print the output
+        try:
+            print(f"Running ldd on {so_file_path} to check dependencies:")
+            result = subprocess.run(['ldd', so_file_path], text=True, capture_output=True, check=True)
+            print(result.stdout)
+        except subprocess.CalledProcessError as e:
+            print(f"Error while running ldd: {e.stderr}")
+        except FileNotFoundError:
+            print("The ldd command is not available on this system.")
+
+
         #manually load the module 
         import ctypes
         ctypes.CDLL('/myworkspace/Megatron-LM/megatron/fused_kernels/build/fused_mix_prec_layer_norm_cuda.so')
