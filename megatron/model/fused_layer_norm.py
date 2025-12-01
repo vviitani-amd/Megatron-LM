@@ -95,6 +95,11 @@ class MixedFusedLayerNorm(torch.nn.Module):
         fused_mix_prec_layer_norm_cuda = importlib.import_module(
           "fused_mix_prec_layer_norm_cuda")
 
+        #manually load the module 
+        import ctypes
+        ctypes.CDLL('/myworkspace/Megatron-LM/megatron/fused_kernels/build/fused_mix_prec_layer_norm_cuda.so')
+        print("Manual loading successful")
+
         if isinstance(normalized_shape, numbers.Integral):
             normalized_shape = (normalized_shape,)
         self.normalized_shape = torch.Size(normalized_shape)
