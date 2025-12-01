@@ -91,14 +91,15 @@ class MixedFusedLayerNorm(torch.nn.Module):
         except PermissionError:
             print(f"Permission denied to access the directory {module_build_directory}.")
 
-
-        fused_mix_prec_layer_norm_cuda = importlib.import_module(
-          "fused_mix_prec_layer_norm_cuda")
-
         #manually load the module 
         import ctypes
         ctypes.CDLL('/myworkspace/Megatron-LM/megatron/fused_kernels/build/fused_mix_prec_layer_norm_cuda.so')
         print("Manual loading successful")
+
+
+        fused_mix_prec_layer_norm_cuda = importlib.import_module(
+          "fused_mix_prec_layer_norm_cuda")
+
 
         if isinstance(normalized_shape, numbers.Integral):
             normalized_shape = (normalized_shape,)
