@@ -74,6 +74,24 @@ class MixedFusedLayerNorm(torch.nn.Module):
         print("fused_mix_prec_layer_norm_cuda" in sys.modules)
         print(f'{sys.path}')
 
+        # check whether the module exists
+        import os
+
+        # Specify the path to the module build directory
+        module_build_directory = '/myworkspace/Megatron-LM/megatron/fused_kernels/build/'
+
+        # List and print the contents of the directory
+        try:
+            files = os.listdir(module_build_directory)
+            print(f"Contents of the module build directory {module_build_directory}:")
+            for file in files:
+                print(file)
+        except FileNotFoundError:
+            print(f"The directory {module_build_directory} does not exist.")
+        except PermissionError:
+            print(f"Permission denied to access the directory {module_build_directory}.")
+
+
         fused_mix_prec_layer_norm_cuda = importlib.import_module(
           "fused_mix_prec_layer_norm_cuda")
 
