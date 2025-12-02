@@ -120,6 +120,10 @@ class MixedFusedLayerNorm(torch.nn.Module):
         # Print the path of the file where the module was loaded from
         print(f"The module 'fused_mix_prec_layer_norm_cuda' was loaded from: {fused_mix_prec_layer_norm_cuda.__file__}")
 
+        # Just as test, force reload the module
+        fused_mix_prec_layer_norm_cuda = importlib.reload(fused_mix_prec_layer_norm_cuda)
+        print("Reloading fused_mix_prec_layer_norm_cuda successful")
+
         if isinstance(normalized_shape, numbers.Integral):
             normalized_shape = (normalized_shape,)
         self.normalized_shape = torch.Size(normalized_shape)
