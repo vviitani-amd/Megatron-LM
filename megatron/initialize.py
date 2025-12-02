@@ -148,6 +148,11 @@ def _compile_dependencies():
     # the lock is released.
     torch.distributed.barrier()
     print("vviitani:debug: hello after loading fused kernels")
+    import sys
+    print(f'{sys.modules=}')
+    print("fused_mix_prec_layer_norm_cuda" in sys.modules)
+    print(f'{sys.path}')
+
     if _is_rank_0():
         print('>>> done with compiling and loading fused kernels. '
               'Compilation time: {:.3f} seconds'.format(
