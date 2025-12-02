@@ -121,7 +121,13 @@ class MixedFusedLayerNorm(torch.nn.Module):
         print(f"The module 'fused_mix_prec_layer_norm_cuda' was loaded from: {fused_mix_prec_layer_norm_cuda.__file__}")
 
         # Just as test, force reload the module
-        fused_mix_prec_layer_norm_cuda = importlib.reload(fused_mix_prec_layer_norm_cuda)
+        # Check if the module is in sys.modules
+        if "fused_mix_prec_layer_norm_cuda" in sys.modules:
+            # Reload the module
+            fused_mix_prec_layer_norm_cuda = importlib.reload(fused_mix_prec_layer_norm_cuda)
+        else:
+            print("Module not found in sys.modules")
+       
         print("Reloading fused_mix_prec_layer_norm_cuda successful")
 
         if isinstance(normalized_shape, numbers.Integral):
