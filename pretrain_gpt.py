@@ -322,6 +322,13 @@ def git_ds_info():
 
 
 if __name__ == "__main__":
+
+    print('vviitani/debug: entering pretrain_gpt')
+    import sys
+    print(f'{sys.modules=}')
+    print("fused_mix_prec_layer_norm_cuda" in sys.modules)
+    print(f'{sys.path}')
+    
     git_ds_info()
     pretrain(train_valid_test_datasets_provider, model_provider, forward_step,
              args_defaults={'tokenizer_type': 'GPT2BPETokenizer'},
