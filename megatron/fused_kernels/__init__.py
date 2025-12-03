@@ -122,6 +122,8 @@ def load(args):
         "fused_mix_prec_layer_norm_cuda", sources, extra_cuda_flags, extra_include_paths)
     sys_modules_status("after _cpp_extention_load_helper")
     
+    print("Inspecting the returned module")
+    _inspect_module(fused_mix_prec_layer_norm_cuda)
 
 def _get_cuda_bare_metal_version(cuda_dir):
     raw_output = subprocess.check_output([cuda_dir + "/bin/nvcc", "-V"],
@@ -141,3 +143,7 @@ def _create_build_dir(buildpath):
     except OSError:
         if not os.path.isdir(buildpath):
             print(f"Creation of the build directory {buildpath} failed")
+
+def _inspect_module(m):
+    print("Variable type:")
+    print(type(m))  # Should output: <class 'module'>
