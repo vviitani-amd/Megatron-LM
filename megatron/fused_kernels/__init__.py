@@ -125,7 +125,7 @@ def load(args):
     print("Inspecting the returned module")
     _inspect_module(fused_mix_prec_layer_norm_cuda)
 
-    import sys¨
+    import sys
     if 'fused_mix_prec_layer_norm_cuda' not in sys.modules
         sys.modules['fused_mix_prec_layer_norm_cuda'] = fused_mix_prec_layer_norm_cuda
 
@@ -153,4 +153,3 @@ def _inspect_module(m):
     print(type(m))  # Should output: <class 'module'>
     print("Contents of the module")
     print(dir(m))
-    
