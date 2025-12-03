@@ -126,7 +126,7 @@ def load(args):
     _inspect_module(fused_mix_prec_layer_norm_cuda)
 
     import sys
-    if 'fused_mix_prec_layer_norm_cuda' not in sys.modules
+    if 'fused_mix_prec_layer_norm_cuda' not in sys.modules:
         sys.modules['fused_mix_prec_layer_norm_cuda'] = fused_mix_prec_layer_norm_cuda
 
 def _get_cuda_bare_metal_version(cuda_dir):
