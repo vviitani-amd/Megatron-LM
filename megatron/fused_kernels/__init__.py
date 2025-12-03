@@ -27,6 +27,16 @@ from torch.utils import cpp_extension
 # extra_cuda_cflags below
 os.environ["TORCH_CUDA_ARCH_LIST"] = ""
 
+def sys_modules_status(id:str):
+
+    print(f"vviitani:debug: probing sys.modules ({id=})")
+    import sys
+    print(f'{sys.modules=}')
+    print("fused_mix_prec_layer_norm_cuda" in sys.modules)
+    print(f'{sys.path}')
+
+
+
 
 def load(args):
 
@@ -106,9 +116,12 @@ def load(args):
 
     sources=[srcpath / 'layer_norm_cuda.cpp',
              srcpath / 'layer_norm_cuda_kernel.cu']
+ 
+    sys_modules_status("before _cpp_extention_load_helper")
     fused_mix_prec_layer_norm_cuda = _cpp_extention_load_helper(
         "fused_mix_prec_layer_norm_cuda", sources, extra_cuda_flags, extra_include_paths)
-
+    sys_modules_status("after _cpp_extention_load_helper")
+    
 
 def _get_cuda_bare_metal_version(cuda_dir):
     raw_output = subprocess.check_output([cuda_dir + "/bin/nvcc", "-V"],
