@@ -67,68 +67,73 @@ class MixedFusedLayerNorm(torch.nn.Module):
         super(MixedFusedLayerNorm, self).__init__()
 
         global fused_mix_prec_layer_norm_cuda
-        print('vviitani/debug: trying to import module fused_mix_prec_layer_norm_cuda')
 
-        import sys
-        print(f'{sys.modules=}')
-        print("fused_mix_prec_layer_norm_cuda" in sys.modules)
-        print(f'{sys.path}')
+        debug_import = False
 
-        # check whether the module exists
-        import os
+        if debug_import:
+            print('vviitani/debug: trying to import module fused_mix_prec_layer_norm_cuda')
 
-        # Specify the path to the module build directory
-        module_build_directory = '/myworkspace/Megatron-LM/megatron/fused_kernels/build/'
+            import sys
+            print(f'{sys.modules=}')
+            print("fused_mix_prec_layer_norm_cuda" in sys.modules)
+            print(f'{sys.path}')
 
-        # List and print the contents of the directory
-        try:
-            files = os.listdir(module_build_directory)
-            print(f"Contents of the module build directory {module_build_directory}:")
-            for file in files:
-                print(file)
-        except FileNotFoundError:
-            print(f"The directory {module_build_directory} does not exist.")
-        except PermissionError:
-            print(f"Permission denied to access the directory {module_build_directory}.")
+            # check whether the module exists
+            import os
 
-        # use ldd on the module file
-        import subprocess
+            # Specify the path to the module build directory
+            module_build_directory = '/myworkspace/Megatron-LM/megatron/fused_kernels/build/'
 
-        # Path to the .so file
-        so_file_path = '/myworkspace/Megatron-LM/megatron/fused_kernels/build/fused_mix_prec_layer_norm_cuda.so'
+            # List and print the contents of the directory
+            try:
+                files = os.listdir(module_build_directory)
+                print(f"Contents of the module build directory {module_build_directory}:")
+                for file in files:
+                    print(file)
+            except FileNotFoundError:
+                print(f"The directory {module_build_directory} does not exist.")
+            except PermissionError:
+                print(f"Permission denied to access the directory {module_build_directory}.")
 
-        # Run the ldd command and print the output
-        try:
-            print(f"Running ldd on {so_file_path} to check dependencies:")
-            result = subprocess.run(['ldd', so_file_path], text=True, capture_output=True, check=True)
-            print(result.stdout)
-        except subprocess.CalledProcessError as e:
-            print(f"Error while running ldd: {e.stderr}")
-        except FileNotFoundError:
-            print("The ldd command is not available on this system.")
+            # use ldd on the module file
+            import subprocess
+
+            # Path to the .so file
+            so_file_path = '/myworkspace/Megatron-LM/megatron/fused_kernels/build/fused_mix_prec_layer_norm_cuda.so'
+
+            # Run the ldd command and print the output
+            try:
+                print(f"Running ldd on {so_file_path} to check dependencies:")
+                result = subprocess.run(['ldd', so_file_path], text=True, capture_output=True, check=True)
+                print(result.stdout)
+            except subprocess.CalledProcessError as e:
+                print(f"Error while running ldd: {e.stderr}")
+            except FileNotFoundError:
+                print("The ldd command is not available on this system.")
 
 
-        #manually load the module 
-        import ctypes
-        ctypes.CDLL('/myworkspace/Megatron-LM/megatron/fused_kernels/build/fused_mix_prec_layer_norm_cuda.so')
-        print("Manual loading successful")
+            #manually load the module 
+            import ctypes
+            ctypes.CDLL('/myworkspace/Megatron-LM/megatron/fused_kernels/build/fused_mix_prec_layer_norm_cuda.so')
+            print("Manual loading successful")
 
 
         fused_mix_prec_layer_norm_cuda = importlib.import_module(
           "fused_mix_prec_layer_norm_cuda")
 
-        # Print the path of the file where the module was loaded from
-        print(f"The module 'fused_mix_prec_layer_norm_cuda' was loaded from: {fused_mix_prec_layer_norm_cuda.__file__}")
+        if debug_import:
+            # Print the path of the file where the module was loaded from
+            print(f"The module 'fused_mix_prec_layer_norm_cuda' was loaded from: {fused_mix_prec_layer_norm_cuda.__file__}")
 
-        # Just as test, force reload the module
-        # Check if the module is in sys.modules
-        if "fused_mix_prec_layer_norm_cuda" in sys.modules:
-            # Reload the module
-            fused_mix_prec_layer_norm_cuda = importlib.reload(fused_mix_prec_layer_norm_cuda)
-        else:
-            print("Module not found in sys.modules")
-       
-        print("Reloading fused_mix_prec_layer_norm_cuda successful")
+            # Just as test, force reload the module
+            # Check if the module is in sys.modules
+            if "fused_mix_prec_layer_norm_cuda" in sys.modules:
+                # Reload the module
+                fused_mix_prec_layer_norm_cuda = importlib.reload(fused_mix_prec_layer_norm_cuda)
+            else:
+                print("Module not found in sys.modules")
+          
+            print("Reloading fused_mix_prec_layer_norm_cuda successful")
 
         if isinstance(normalized_shape, numbers.Integral):
             normalized_shape = (normalized_shape,)
