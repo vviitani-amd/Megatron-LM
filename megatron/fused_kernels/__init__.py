@@ -125,6 +125,10 @@ def load(args):
     print("Inspecting the returned module")
     _inspect_module(fused_mix_prec_layer_norm_cuda)
 
+    import sys¨
+    if 'fused_mix_prec_layer_norm_cuda' not in sys.modules
+        sys.modules['fused_mix_prec_layer_norm_cuda'] = fused_mix_prec_layer_norm_cuda
+
 def _get_cuda_bare_metal_version(cuda_dir):
     raw_output = subprocess.check_output([cuda_dir + "/bin/nvcc", "-V"],
                                          universal_newlines=True)
@@ -147,3 +151,6 @@ def _create_build_dir(buildpath):
 def _inspect_module(m):
     print("Variable type:")
     print(type(m))  # Should output: <class 'module'>
+    print("Contents of the module")
+    print(dir(m))
+    
