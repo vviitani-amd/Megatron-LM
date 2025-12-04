@@ -20,6 +20,9 @@ import subprocess
 import torch
 from torch.utils import cpp_extension
 
+import copy
+import sys
+
 # Setting this param to a list has a problem of generating different
 # compilation commands (with diferent order of architectures) and
 # leading to recompilation of fused kernels. Set it to empty string
@@ -116,16 +119,29 @@ def load(args):
 
     sources=[srcpath / 'layer_norm_cuda.cpp',
              srcpath / 'layer_norm_cuda_kernel.cu']
- 
+
+    sys_modules_before = copy.deepcopy(sys.modules)
+
     sys_modules_status("before _cpp_extention_load_helper")
     fused_mix_prec_layer_norm_cuda = _cpp_extention_load_helper(
         "fused_mix_prec_layer_norm_cuda", sources, extra_cuda_flags, extra_include_paths)
     sys_modules_status("after _cpp_extention_load_helper")
     
+    print("Comparing sys.modules before and after module loading")
+    for key in sys.modules:
+        if key not in sys_modules_before: 
+            print(f"New key {key}")
+        if(sys.modules[key] != sys_modules_before[key])
+            print(f"Value modified for key {key}"
+    
+    for key in sys_modules_before:
+        if key not in sys.modules: 
+            print(f"Deleted key {key}")
+                
+
     print("Inspecting the returned module")
     _inspect_module(fused_mix_prec_layer_norm_cuda)
 
-    import sys
     if 'fused_mix_prec_layer_norm_cuda' not in sys.modules:
         sys.modules['fused_mix_prec_layer_norm_cuda'] = fused_mix_prec_layer_norm_cuda
 
