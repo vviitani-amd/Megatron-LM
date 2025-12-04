@@ -119,7 +119,7 @@ def load(args):
     sources=[srcpath / 'layer_norm_cuda.cpp',
              srcpath / 'layer_norm_cuda_kernel.cu']
 
-    sys_modules_before = {key: value for (key, value) in sys.modules}
+    sys_modules_before = {key: value for (key, value) in sys.modules.items()}
 
     sys_modules_status("before _cpp_extention_load_helper")
     fused_mix_prec_layer_norm_cuda = _cpp_extention_load_helper(
