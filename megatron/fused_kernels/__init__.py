@@ -20,7 +20,6 @@ import subprocess
 import torch
 from torch.utils import cpp_extension
 
-import copy
 import sys
 
 # Setting this param to a list has a problem of generating different
@@ -120,7 +119,7 @@ def load(args):
     sources=[srcpath / 'layer_norm_cuda.cpp',
              srcpath / 'layer_norm_cuda_kernel.cu']
 
-    sys_modules_before = copy.deepcopy(sys.modules)
+    sys_modules_before = {key: value for (key, value) in sys.modules}
 
     sys_modules_status("before _cpp_extention_load_helper")
     fused_mix_prec_layer_norm_cuda = _cpp_extention_load_helper(
