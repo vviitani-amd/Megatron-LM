@@ -132,7 +132,7 @@ def load(args):
         if key not in sys_modules_before: 
             print(f"New key {key}")
         if(sys.modules[key] != sys_modules_before[key]):
-            print(f"Value modified for key {key}"
+            print(f"Value modified for key {key}")
     
     for key in sys_modules_before:
         if key not in sys.modules: 
