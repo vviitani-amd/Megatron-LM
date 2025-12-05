@@ -53,7 +53,7 @@ def load(args):
                                '-gencode', 'arch=compute_70,code=sm_70',
                                '--use_fast_math'] + extra_cuda_flags + cc_flag
 
-        return cpp_extension.load(
+        module = cpp_extension.load(
             name=name,
             sources=sources,
             build_directory=buildpath,
@@ -62,6 +62,11 @@ def load(args):
             extra_include_paths=extra_include_paths,
             verbose=(args.rank == 0)
         )
+
+        if name not in sys.modules:
+	        sys.modules[name] = module    
+
+        return module
 
     # ==============
     # Fused softmax.
@@ -108,9 +113,6 @@ def load(args):
              srcpath / 'layer_norm_cuda_kernel.cu']
     fused_mix_prec_layer_norm_cuda = _cpp_extention_load_helper(
         "fused_mix_prec_layer_norm_cuda", sources, extra_cuda_flags, extra_include_paths)
-    
-    if 'fused_mix_prec_layer_norm_cuda' not in sys.modules:
-	    sys.modules['fused_mix_prec_layer_norm_cuda'] = fused_mix_prec_layer_norm_cuda    
 
 
 def _get_cuda_bare_metal_version(cuda_dir):
