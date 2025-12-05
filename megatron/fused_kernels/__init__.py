@@ -16,6 +16,7 @@
 import os
 import pathlib
 import subprocess
+import sys
 
 import torch
 from torch.utils import cpp_extension
