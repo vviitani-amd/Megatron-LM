@@ -16,6 +16,7 @@
 import os
 import pathlib
 import subprocess
+import sys
 
 import torch
 from torch.utils import cpp_extension
@@ -53,7 +54,7 @@ def load(args):
                                '-gencode', 'arch=compute_70,code=sm_70',
                                '--use_fast_math'] + extra_cuda_flags + cc_flag
 
-        return cpp_extension.load(
+        module = cpp_extension.load(
             name=name,
             sources=sources,
             build_directory=buildpath,
@@ -62,6 +63,11 @@ def load(args):
             extra_include_paths=extra_include_paths,
             verbose=(args.rank == 0)
         )
+
+        if name not in sys.modules:
+	        sys.modules[name] = module    
+
+        return module
 
     # ==============
     # Fused softmax.
